@@ -172,6 +172,15 @@ async def on_message(message):
     await message.channel.send(response.choices[0].message.content,
                                reference=referenced_message)
 
+  if message.content == 'cc delete':
+    # Get the bot's previous message
+    async for previous_message in message.channel.history(limit=50):
+      if previous_message.author == client.user:
+        # Delete the bot's previous message
+        await previous_message.delete()
+        break
+    await message.delete()
+
 
 keep_alive()
 TOKEN = os.environ['CASSIUS_TOKEN']
