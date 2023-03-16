@@ -47,6 +47,7 @@ async def on_message(message):
   if message.content.startswith('cc say'):
     referenced_message = await message.channel.fetch_message(
       message.reference.message_id) if message.reference is not None else None
+    referenced_user = referenced_message.author.name if message.reference is not None else 'X'
     human_input = message.content[len('cc say'):].strip()
     await message.delete()
 
@@ -56,9 +57,9 @@ async def on_message(message):
     {prompts.Cassius_Clarke_background}
     {prompts.tone}
 
-    You are a brilliant fantasy writer. You are able to take dialogue from one character and reword it to sound like a completely different character said it, with their tone and mannerisms. Take the dialogue from 'X' below, and reword it to sound like Cassius Clarke would say it, with their tone and mannerisms. Output your answer in 'Y'.
+    You are a brilliant fantasy writer. You are able to take dialogue from one character and reword it to sound like a completely different character said it, with their tone and mannerisms. Take the dialogue from 'X' below, and reword it to sound like Cassius Clarke would say it, with their tone and mannerisms. Output your answer as 'Cassius Clarke'.
     X:{human_input}
-    Y:'''
+    Cassius Clark:'''
 
     response = openai.ChatCompletion.create(model="gpt-3.5-turbo",
                                             messages=[
@@ -85,6 +86,7 @@ async def on_message(message):
   if message.content.startswith('cc reply') and message.reference is not None:
     referenced_message = await message.channel.fetch_message(
       message.reference.message_id)
+    referenced_user = referenced_message.author.name
     human_input = referenced_message.content
     await message.delete()
 
@@ -93,9 +95,9 @@ async def on_message(message):
     {prompts.Cassius_Clarke_background}
     {prompts.tone}
 
-    You are a brilliant Shakespearean journalist. You specialize in war journalism. You ask great questions and are comedic and charistmatic. Read the dialogue from 'X' below, and reply to it in the way that Cassius Clarke would, with their tone and mannerisms. Output your answer in 'Y'.
-    X:{human_input}
-    Y:'''
+    You are a brilliant Shakespearean journalist. You specialize in war journalism. You ask great questions and are comedic and charistmatic. Read the dialogue from {referenced_user} below, and reply to it in the way that Cassius Clarke would, with their tone and mannerisms. Output your answer in 'Cassius Clark'.
+    {referenced_user}:{human_input}
+    Cassius Clark:'''
 
     response = openai.ChatCompletion.create(model="gpt-3.5-turbo",
                                             messages=[
@@ -114,6 +116,7 @@ async def on_message(message):
       'cc comment') and message.reference is not None:
     referenced_message = await message.channel.fetch_message(
       message.reference.message_id)
+    referenced_user = referenced_message.author.name
     human_input = referenced_message.content
     await message.delete()
 
@@ -122,9 +125,9 @@ async def on_message(message):
     {prompts.Cassius_Clarke_background}
     {prompts.tone}
 
-    You are a brilliant Shakespearean journalist. You specialize in war journalism. You report and make highly engaging comments, and are comedic and charistmatic. Read the dialogue from 'X' below, and make a comment on it in the Cassius Clarke would, with their tone and mannerisms. Output your answer in 'Y'.
-    X:{human_input}
-    Y:'''
+    You are a brilliant Shakespearean journalist. You specialize in war journalism. You report and make highly engaging comments, and are comedic and charistmatic. Read the dialogue from {referenced_user} below, and make a comment on it in the Cassius Clarke would, with their tone and mannerisms. Output your answer in 'Cassius Clark'.
+    {referenced_user}:{human_input}
+    Cassius Clark:'''
 
     response = openai.ChatCompletion.create(model="gpt-3.5-turbo",
                                             messages=[
@@ -152,9 +155,9 @@ async def on_message(message):
     {prompts.Cassius_Clarke_background}
     {prompts.tone}
 
-    You are a brilliant Shakespearean journalist. You specialize in war journalism. You write great headlines and are comedic and charistmatic. Read the dialogue from 'X' written by {referenced_user}, and turn it into a headline, in the way that Cassius Clarke would, with their tone and mannerisms. Write it in all-caps. Output your answer in 'Y'.
-    X:{human_input}
-    Y:'''
+    You are a brilliant Shakespearean journalist. You specialize in war journalism. You write great headlines and are comedic and charistmatic. Read the dialogue from {referenced_user}, and turn it into a headline, in the way that Cassius Clarke would, with their tone and mannerisms. Write it in all-caps. Output your answer in 'Cassius Clark'.
+    {referenced_user}:{human_input}
+    Cassius Clark:'''
 
     response = openai.ChatCompletion.create(model="gpt-3.5-turbo",
                                             messages=[
